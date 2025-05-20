@@ -35,7 +35,7 @@ lumina-backend/
 │   ├── middlewares/        # Auth, error handling
 │   ├── utils/              # Helper functions (email, S3, tokens, notifications)
 │   ├── services/           # Push notifications & Google auth logic
-│   └── index.ts            # App entry point
+│   └── server.ts            # App entry point
 ├── .env
 ├── package.json
 ├── tsconfig.json
@@ -106,8 +106,7 @@ Register with email/password:
 {
   "name": "Jane Doe",
   "email": "jane@example.com",
-  "password": "password123",
-  "confirmPassword": "password123"
+  "password": "password123"
 }
 ```
 
