@@ -65,7 +65,7 @@ Create a `.env` file in the root:
 
 ```env
 PORT=5000
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/lumina
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/
 JWT_SECRET=your_jwt_secret
 
 AWS_ACCESS_KEY_ID=your_aws_access_key
