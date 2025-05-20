@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { NextFunction, Request, Response } from "express";
 
-export const logEvents = (
+export const logEvent = (
   req: Request,
   res: Response,
   next: NextFunction
