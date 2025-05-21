@@ -4,7 +4,7 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password?: string;
-  image?: string;
+  avatar?: string;
   isVerified: boolean;
   verifiedAt?: Date;
   createdAt: Date;
@@ -29,13 +29,10 @@ const UserSchema = new Schema<IUser>(
 
     password: {
       type: String,
-      required: function () {
-        return !this.image;
-      },
       minlength: 6,
     },
 
-    image: {
+    avatar: {
       type: String,
     },
 

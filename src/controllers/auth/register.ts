@@ -1,10 +1,13 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import User from "../../models/User";
-import VerificationToken from "../../models/VerificationToken";
 import { generateVerificationToken } from "../../utils/generateToken";
 import { sendVerificationEmail } from "../../utils/email/sendVerification";
-import { isPasswordValid } from "../../utils/passwordRegex";
+import {
+  getUsernameFromEmail,
+  isEmailValid,
+  isPasswordValid,
+} from "../../utils/regex";
 import { capitalizeFirstLetter } from "../../utils/capitalizeLetter";
 
 export const handleRegisterUser = async (
@@ -23,25 +26,31 @@ export const handleRegisterUser = async (
     return;
   }
 
+  if (!isEmailValid(email)) {
+    res.status(400).json({ success: false, message: "Invalid Email" });
+    return;
+  }
+
+  if (!isPasswordValid(password)) {
+    res.status(400).json({ success: false, message: "Weak Password" });
+    return;
+  }
+
   try {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       if (existingUser.isVerified) {
         res
-          .status(400)
+          .status(409)
           .json({ success: false, message: "User already exists" });
-        return;
-      }
-
-      if (!isPasswordValid(password)) {
-        res.status(400).json({ success: false, message: "Weak Password" });
         return;
       }
 
       // Update password & name if re-registering
       existingUser.password = await bcrypt.hash(password, 10);
       existingUser.name = name;
+      existingUser.avatar = undefined;
       await existingUser.save();
 
       // Generate new token
@@ -52,7 +61,7 @@ export const handleRegisterUser = async (
 
       res
         .status(200)
-        .json({ success: true, message: "Verification link Sent" });
+        .json({ success: true, message: "Email verification sent" });
       return;
     }
 
@@ -69,7 +78,72 @@ export const handleRegisterUser = async (
     const token = await generateVerificationToken(newUser._id.toString());
     await sendVerificationEmail(email, capitalizeFirstLetter(name), token);
 
-    res.status(201).json({ success: true, message: "Verification link Sent" });
+    res.status(201).json({ success: true, message: "Email verification sent" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+export const handleRegisterUserWithGoogle = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  if (!req.body) {
+    res.status(400).json({ success: false, message: "No Request Body found" });
+    return;
+  }
+
+  const { name, email, avatar } = req.body;
+
+  if (!email) {
+    res.status(400).json({ success: false, message: "Email is Required" });
+    return;
+  }
+  const userName = name ?? getUsernameFromEmail(email);
+
+  try {
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      if (existingUser.isVerified) {
+        res
+          .status(409)
+          .json({ success: false, message: "User already exists" });
+        return;
+      }
+
+      existingUser.name = userName;
+      existingUser.avatar = avatar;
+      existingUser.password = undefined;
+      await existingUser.save();
+
+      // Generate new token
+      const token = await generateVerificationToken(
+        existingUser._id.toString()
+      );
+      await sendVerificationEmail(
+        email,
+        capitalizeFirstLetter(userName),
+        token
+      );
+
+      res
+        .status(200)
+        .json({ success: true, message: "Email verification sent" });
+      return;
+    }
+
+    const newUser = await User.create({
+      name: userName,
+      email,
+      isVerified: false,
+    });
+
+    const token = await generateVerificationToken(newUser._id.toString());
+    await sendVerificationEmail(email, capitalizeFirstLetter(userName), token);
+
+    res.status(201).json({ success: true, message: "Email verification sent" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
