@@ -52,7 +52,7 @@ export const handleRegisterUser = async (
 
       res
         .status(200)
-        .json({ success: true, message: "Verification link Re-sent" });
+        .json({ success: true, message: "Verification link Sent" });
       return;
     }
 
@@ -69,7 +69,7 @@ export const handleRegisterUser = async (
     const token = await generateVerificationToken(newUser._id.toString());
     await sendVerificationEmail(email, capitalizeFirstLetter(name), token);
 
-    res.status(201).json({ success: true, message: "Verification link sent" });
+    res.status(201).json({ success: true, message: "Verification link Sent" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal Server Error" });

@@ -5,7 +5,7 @@ export const sendVerificationEmail = async (
   name: string,
   token: string
 ) => {
-  const url = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+  const url = `${process.env.PRO_FRONTEND_URL}/verify-email?token=${token}`;
 
   await transporter.sendMail({
     from: '"Lumina" <no-reply@lumina.com>',
