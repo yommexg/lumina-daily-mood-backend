@@ -8,7 +8,9 @@ export const logEvent = (
 ): void => {
   const dateTime = `${format(new Date(), "yyyy-MM-dd\tHH:mm:ss")}`;
   console.log(
-    `${dateTime} \t ${req.method} \t Origin=${req.headers.origin} \t ${req.url}`
+    `${dateTime} \t ${req.method} \t Origin=${req.headers.origin} \t ${
+      req.url
+    } \t Body-${JSON.stringify(req?.body)}`
   );
 
   next();

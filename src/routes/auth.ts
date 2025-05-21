@@ -1,11 +1,10 @@
 import express from "express";
 import { handleRegisterUser } from "../controllers/auth/register";
-
-// import { handleGoogleLogin } from "../controllers/googleAuth.controller";
+import { handleVerifyEmail } from "../controllers/auth/verifyEmail";
 
 const authRouter = express.Router();
 
 authRouter.post("/register", handleRegisterUser);
-// router.post("/auth/google", handleGoogleLogin);
+authRouter.get("/verify-email", handleVerifyEmail);
 
 export default authRouter;

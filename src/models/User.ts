@@ -3,9 +3,10 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IUser extends Document {
   name: string;
   email: string;
-  password?: string; // optional for Google Sign-In
-  image?: string; // avatar/profile image
+  password?: string;
+  image?: string;
   isVerified: boolean;
+  verifiedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,7 +30,6 @@ const UserSchema = new Schema<IUser>(
     password: {
       type: String,
       required: function () {
-        // Required only if not using Google Sign-In
         return !this.image;
       },
       minlength: 6,
@@ -42,6 +42,10 @@ const UserSchema = new Schema<IUser>(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+
+    verifiedAt: {
+      type: Date,
     },
   },
   {

@@ -2,12 +2,18 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
+import cors from "cors";
 
-import connectDB from "./config/dbConect";
-import authRouter from "./routes/auth";
+import connectDB from "./config/dbConnect";
+import corsOptions from "./config/corsOption";
+
 import { errorEvent, logEvent } from "./middlewares/events";
 
+import authRouter from "./routes/auth";
+
 dotenv.config();
+
+const port = process.env.PORT;
 
 connectDB();
 
@@ -17,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-const port = process.env.PORT;
+app.use(cors(corsOptions));
 
 app.use(logEvent);
 
