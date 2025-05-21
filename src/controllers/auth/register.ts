@@ -5,7 +5,7 @@ import User from "../../models/User";
 import { generateVerificationToken } from "../../utils/generateToken";
 import { sendVerificationEmail } from "../../utils/email/sendVerification";
 import { isPasswordValid } from "../../utils/passwordRegex";
-import { capitalizeFirstLetter } from "../../utils/email/capitalizeLetter";
+import { capitalizeFirstLetter } from "../../utils/capitalizeLetter";
 
 export const handleRegisterUser = async (
   req: Request,
