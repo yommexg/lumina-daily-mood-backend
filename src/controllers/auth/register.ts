@@ -51,6 +51,7 @@ export const handleRegisterUser = async (
       existingUser.password = await bcrypt.hash(password, 10);
       existingUser.name = name;
       existingUser.avatar = undefined;
+      existingUser.googleId = undefined;
       await existingUser.save();
 
       // Generate new token
@@ -60,7 +61,7 @@ export const handleRegisterUser = async (
       await sendVerificationEmail(email, capitalizeFirstLetter(name), token);
 
       res
-        .status(200)
+        .status(201)
         .json({ success: true, message: "Email verification sent" });
       return;
     }
@@ -94,10 +95,10 @@ export const handleRegisterUserWithGoogle = async (
     return;
   }
 
-  const { name, email, avatar } = req.body;
+  const { name, email, avatar, googleId } = req.body;
 
-  if (!email) {
-    res.status(400).json({ success: false, message: "Email is Required" });
+  if (!email || !googleId) {
+    res.status(400).json({ success: false, message: "Incomplete Details" });
     return;
   }
   const userName = name ?? getUsernameFromEmail(email);
@@ -115,6 +116,7 @@ export const handleRegisterUserWithGoogle = async (
 
       existingUser.name = userName;
       existingUser.avatar = avatar;
+      existingUser.googleId = googleId;
       existingUser.password = undefined;
       await existingUser.save();
 
@@ -129,7 +131,7 @@ export const handleRegisterUserWithGoogle = async (
       );
 
       res
-        .status(200)
+        .status(201)
         .json({ success: true, message: "Email verification sent" });
       return;
     }
@@ -137,6 +139,8 @@ export const handleRegisterUserWithGoogle = async (
     const newUser = await User.create({
       name: userName,
       email,
+      googleId,
+      avatar,
       isVerified: false,
     });
 
