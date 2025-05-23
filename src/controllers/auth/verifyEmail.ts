@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import VerificationToken from "../../models/VerificationToken";
 import User from "../../models/User";
+import { sendPushNotification } from "../../utils/pushNotifications";
 
 export const handleVerifyEmail = async (
   req: Request,
@@ -36,6 +37,14 @@ export const handleVerifyEmail = async (
     await user.save();
 
     await VerificationToken.deleteOne({ _id: existingToken._id });
+
+    if (user.expoPushToken) {
+      sendPushNotification({
+        pushTokens: [user.expoPushToken],
+        title: "✅ Account Verified Successfully",
+        body: "Your account has been verified!. You may now sign in to your account.",
+      });
+    }
 
     res
       .status(200)
