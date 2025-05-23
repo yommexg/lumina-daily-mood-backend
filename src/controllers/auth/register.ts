@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
+
 import User from "../../models/User";
 import { generateVerificationToken } from "../../utils/generateToken";
 import { sendVerificationEmail } from "../../utils/email/sendVerification";
@@ -9,6 +10,7 @@ import {
   isPasswordValid,
 } from "../../utils/regex";
 import { capitalizeFirstLetter } from "../../utils/capitalizeLetter";
+import { sendPushNotification } from "../../utils/pushNotifications";
 
 export const handleRegisterUser = async (
   req: Request,
@@ -19,7 +21,7 @@ export const handleRegisterUser = async (
     return;
   }
 
-  const { name, email, password } = req.body;
+  const { name, email, password, expoPushToken } = req.body;
 
   if (!name || !email || !password) {
     res.status(400).json({ success: false, message: "Missing User Details" });
@@ -50,6 +52,7 @@ export const handleRegisterUser = async (
       // Update password & name if re-registering
       existingUser.password = await bcrypt.hash(password, 10);
       existingUser.name = name;
+      existingUser.expoPushToken = expoPushToken;
       existingUser.avatar = undefined;
       existingUser.googleId = undefined;
       await existingUser.save();
@@ -73,11 +76,19 @@ export const handleRegisterUser = async (
       name,
       email,
       password: hashedPassword,
+      expoPushToken,
       isVerified: false,
     });
 
     const token = await generateVerificationToken(newUser._id.toString());
     await sendVerificationEmail(email, capitalizeFirstLetter(name), token);
+    if (expoPushToken) {
+      sendPushNotification({
+        pushTokens: [expoPushToken],
+        title: "Verify Your Email",
+        body: `A verification email has been sent to ${email}. Please check your inbox — and don't forget to check your spam folder just in case!`,
+      });
+    }
 
     res.status(201).json({ success: true, message: "Email verification sent" });
   } catch (error) {
@@ -95,7 +106,7 @@ export const handleRegisterUserWithGoogle = async (
     return;
   }
 
-  const { name, email, avatar, googleId } = req.body;
+  const { name, email, avatar, googleId, expoPushToken } = req.body;
 
   if (!email || !googleId) {
     res.status(400).json({ success: false, message: "Incomplete Details" });
@@ -117,6 +128,7 @@ export const handleRegisterUserWithGoogle = async (
       existingUser.name = userName;
       existingUser.avatar = avatar;
       existingUser.googleId = googleId;
+      existingUser.expoPushToken = expoPushToken;
       existingUser.password = undefined;
       await existingUser.save();
 
@@ -141,11 +153,20 @@ export const handleRegisterUserWithGoogle = async (
       email,
       googleId,
       avatar,
+      expoPushToken,
       isVerified: false,
     });
 
     const token = await generateVerificationToken(newUser._id.toString());
     await sendVerificationEmail(email, capitalizeFirstLetter(userName), token);
+
+    if (expoPushToken) {
+      sendPushNotification({
+        pushTokens: [expoPushToken],
+        title: "Verify Your Email",
+        body: `A verification email has been sent to ${email}. Please check your inbox — and don't forget to check your spam folder just in case!`,
+      });
+    }
 
     res.status(201).json({ success: true, message: "Email verification sent" });
   } catch (error) {

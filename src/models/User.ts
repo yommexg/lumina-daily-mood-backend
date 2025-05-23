@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string;
   password?: string;
   googleId?: string;
+  expoPushToken?: string;
   avatar?: string;
   isVerified: boolean;
   verifiedAt?: Date;
@@ -34,6 +35,10 @@ const UserSchema = new Schema<IUser>(
     },
 
     googleId: {
+      type: String,
+    },
+
+    expoPushToken: {
       type: String,
     },
 
