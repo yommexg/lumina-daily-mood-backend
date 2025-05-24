@@ -58,7 +58,7 @@ export const sendPushNotification = async ({
     // Send the push notifications in chunks
     for (let chunk of chunks) {
       let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
-      console.log("Notification Ticket Chunk:", ticketChunk);
+      // console.log("Notification Ticket Chunk:", ticketChunk);
       tickets.push(...ticketChunk);
     }
   } catch (error) {
@@ -78,7 +78,7 @@ export const sendPushNotification = async ({
     // Retrieve receipts to check the status of each notification
     for (let chunk of receiptIdChunks) {
       let receipts = await expo.getPushNotificationReceiptsAsync(chunk);
-      console.log("Receipts:", receipts);
+      // console.log("Receipts:", receipts);
 
       for (let receiptId in receipts) {
         const { status, details } = receipts[receiptId];
