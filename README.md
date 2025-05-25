@@ -4,7 +4,7 @@ This is the backend for **Lumina**, a mood journaling app built with **Node.js**
 
 - 🔐 Email & Google authentication
 - 📥 Mood tracking
-- 📦 AWS S3 file uploads
+<!-- - 📦 AWS S3 file uploads  -->
 - 🔔 Expo push notifications
 - 🧰 Utility helpers
 
@@ -17,8 +17,8 @@ This is the backend for **Lumina**, a mood journaling app built with **Node.js**
 - **MongoDB** + **Mongoose**
 - **JWT** for authentication
 - **bcryptjs** for password hashing
-- **Google Sign-In**
-- **AWS SDK (S3)**
+- **Google Sign-In** for google authentication
+<!-- - **AWS SDK (S3)** -->
 - **Expo Push Notifications**
 
 ---
@@ -28,13 +28,12 @@ This is the backend for **Lumina**, a mood journaling app built with **Node.js**
 ```
 lumina-backend/
 ├── src/
-│   ├── config/             # DB & AWS setup
+│   ├── config/             # Cors Options and DB connect
 │   ├── controllers/        # Route logic
 │   ├── models/             # Mongoose schemas
 │   ├── routes/             # Express routers
 │   ├── middlewares/        # Auth, error handling
 │   ├── utils/              # Helper functions (email, S3, tokens, notifications)
-│   ├── services/           # Push notifications & Google auth logic
 │   └── server.ts            # App entry point
 ├── .env
 ├── package.json
@@ -106,7 +105,8 @@ Register with email/password:
 {
   "name": "Jane Doe",
   "email": "jane@example.com",
-  "password": "password123"
+  "password": "password123",
+  "expoPushToken": "ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]"
 }
 ```
 
@@ -116,7 +116,9 @@ Register with Google:
 {
   "name": "Jane Doe",
   "email": "jane@gmail.com",
-  "googleId": "1234567890"
+  "googleId": "1234567890",
+  "expoPushToken": "ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]",
+  "avatar": "https://lh3.googleusercontent.com/a-/AOh14Ggxxxxxxxxxxxxxxxxxxxxxx"
 }
 ```
 
@@ -124,10 +126,22 @@ Register with Google:
 
 ### 🔑 `POST /api/auth/login`
 
+Login with email/password:
+
 ```json
 {
   "email": "jane@example.com",
-  "password": "password123"
+  "password": "password123",
+  "expoPushToken": "ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]"
+}
+```
+
+Login with Google:
+
+```json
+{
+  "tokenId": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjY4NzEyMzQ1NiIsInR5cCI6IkpXVCJ9.eyJhenAiOiJleGFtcGxlLWFwcC5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiJleGFtcGxlLWF1ZGllbmNlIiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaXNzIjoihttps://accounts.google.com\",\"exp\":9999999999}",
+  "expoPushToken": "ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]"
 }
 ```
 
@@ -184,11 +198,12 @@ Send push notifications via Expo:
 
 Located in `src/utils/`, includes:
 
+- `/email/*` – Send Emails to Users using Nodemailer
+- `capitalizeLetter` – Capitalize any letter (e.g Capitalize first letter)
+- `generateToken` – Generate Tokens (e.g Verification Tokens)
+- `pushNotification` – Send Expo notification to the mobile app
+- `regex` – Test validity of Requests (e.g. Email and Password Validity)
 - `uploadToS3(file)` – Upload file to AWS S3
-- `sendPushNotification(token, title, body)` – Send Expo notification
-- `generateJWT(user)` – Sign JWT token
-- `hashPassword(password)` – Secure password hash
-- `verifyGoogleToken(idToken)` – Google sign-in verification
 
 ---
 
@@ -206,16 +221,18 @@ Located in `src/utils/`, includes:
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/lumina
-JWT_SECRET=supersecretjwt
 
-AWS_ACCESS_KEY_ID=ABC123XYZ
-AWS_SECRET_ACCESS_KEY=ABC123XYZSECRET
-AWS_REGION=us-east-1
-S3_BUCKET_NAME=lumina-media
+DATABASE_URI=mongodb+srv://username:password@cluster0.mongodb.net/dbname?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret_key_here
 
-EXPO_ACCESS_TOKEN=your_expo_access_token
-GOOGLE_CLIENT_ID=your_google_client_id
+EMAIL_USER=your_email@example.com
+EMAIL_PASS=your_email_password_here
+
+PRO_FRONTEND_URL=https://your-production-frontend.com
+DEV_FRONTEND_URL=http://localhost:3000
+
+GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+EXPO_ACCESS_TOKEN=your-expo-access-token
 ```
 
 ---
