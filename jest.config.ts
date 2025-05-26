@@ -10,4 +10,12 @@ module.exports = {
   moduleNameMapper: {
     "^@mocks(.*)$": "<rootDir>/mocks$1",
   },
+  coverageDirectory: "coverage",
+  collectCoverageFrom: [
+    "src/**/*.{ts,js}",
+    "!src/server.ts", // if you want to exclude entry point
+    "!src/config/**", // exclude config
+    "!**/node_modules/**",
+    "!**/__tests__/**",
+  ],
 };
