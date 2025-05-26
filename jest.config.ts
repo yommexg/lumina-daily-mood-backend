@@ -6,5 +6,8 @@ module.exports = {
     "^.+\\.tsx?$": ["ts-jest", { tsconfig: "tsconfig.json" }],
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
-  testMatch: ["**/_tests_/**/*.test.ts"],
+  testMatch: ["<rootDir>/tests/**/*.test.ts"],
+  moduleNameMapper: {
+    "^@mocks(.*)$": "<rootDir>/mocks$1",
+  },
 };

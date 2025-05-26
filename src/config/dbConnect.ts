@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
 const connectDB = async (): Promise<void> => {
+  if (process.env.NODE_ENV === "test") return;
+
   mongoose.set("strictQuery", false);
 
   try {
