@@ -5,6 +5,8 @@ export const sendVerificationEmail = async (
   name: string,
   token: string
 ) => {
+  if (process.env.NODE_ENV === "test") return;
+
   const url = `${process.env.PRO_FRONTEND_URL}/verify-email?token=${token}`;
 
   await transporter.sendMail({

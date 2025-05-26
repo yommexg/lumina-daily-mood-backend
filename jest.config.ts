@@ -9,6 +9,7 @@ module.exports = {
   testMatch: ["<rootDir>/tests/**/*.test.ts"],
   moduleNameMapper: {
     "^@mocks(.*)$": "<rootDir>/mocks$1",
+    "^expo-server-sdk$": "<rootDir>/tests/mocks/expo-server-sdk.ts",
   },
   coverageDirectory: "coverage",
   collectCoverageFrom: [
