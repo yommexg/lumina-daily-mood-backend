@@ -62,21 +62,25 @@ npm install
 
 Create a `.env` file in the root:
 
+---
+
+## 🧪 Sample `.env`
+
 ```env
 PORT=5000
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/
-JWT_SECRET=your_jwt_secret
 
-AWS_ACCESS_KEY_ID=your_aws_access_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret
-AWS_REGION=your_region
-S3_BUCKET_NAME=lumina-media
+DATABASE_URI=mongodb+srv://username:password@cluster0.mongodb.net/dbname?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret_key_here
 
-EXPO_ACCESS_TOKEN=your_expo_access_token
-GOOGLE_CLIENT_ID=your_google_client_id
+EMAIL_USER=your_email@example.com
+EMAIL_PASS=your_email_password_here
+
+PRO_FRONTEND_URL=https://your-production-frontend.com
+DEV_FRONTEND_URL=http://localhost:3000
+
+GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+EXPO_ACCESS_TOKEN=your-expo-access-token
 ```
-
----
 
 ## 🚀 Start the App
 
@@ -214,26 +218,6 @@ Located in `src/utils/`, includes:
 | `npm run dev`   | Start dev server (ts-node-dev) |
 | `npm run build` | Compile TypeScript             |
 | `npm start`     | Start from compiled JS         |
-
----
-
-## 🧪 Sample `.env`
-
-```env
-PORT=5000
-
-DATABASE_URI=mongodb+srv://username:password@cluster0.mongodb.net/dbname?retryWrites=true&w=majority
-JWT_SECRET=your_jwt_secret_key_here
-
-EMAIL_USER=your_email@example.com
-EMAIL_PASS=your_email_password_here
-
-PRO_FRONTEND_URL=https://your-production-frontend.com
-DEV_FRONTEND_URL=http://localhost:3000
-
-GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-EXPO_ACCESS_TOKEN=your-expo-access-token
-```
 
 ---
 
