@@ -2,7 +2,7 @@ import request from "supertest";
 import mongoose from "mongoose";
 import app from "../../src/server";
 import User from "../../src/models/User";
-import "../mocks/utils/sendVerificationEmail.test";
+import "../mocks/utils/email/sendVerificationEmail.test";
 import "../mocks/utils/sendPushNotifications.test";
 
 describe("Register Routes", () => {

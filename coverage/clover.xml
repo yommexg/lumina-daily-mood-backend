@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1748281974762" clover="3.2.0">
-  <project timestamp="1748281974763" name="All files">
-    <metrics statements="267" coveredstatements="155" conditionals="71" coveredconditionals="28" methods="17" coveredmethods="11" elements="355" coveredelements="194" complexity="0" loc="267" ncloc="267" packages="6" files="13" classes="13"/>
+<coverage generated="1748289610764" clover="3.2.0">
+  <project timestamp="1748289610764" name="All files">
+    <metrics statements="268" coveredstatements="158" conditionals="74" coveredconditionals="31" methods="17" coveredmethods="11" elements="359" coveredelements="200" complexity="0" loc="268" ncloc="268" packages="6" files="13" classes="13"/>
     <package name="controllers.auth">
       <metrics statements="175" coveredstatements="75" conditionals="51" coveredconditionals="12" methods="5" coveredmethods="2"/>
       <file name="login.ts" path="C:\Users\SHOPINVERSE\Desktop\Projects\DailyMoodTracker - 1\daily-mood-backend\src\controllers\auth\login.ts">
@@ -306,14 +306,15 @@
       </file>
     </package>
     <package name="utils.email">
-      <metrics statements="12" coveredstatements="10" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+      <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
       <file name="sendVerification.ts" path="C:\Users\SHOPINVERSE\Desktop\Projects\DailyMoodTracker - 1\daily-mood-backend\src\utils\email\sendVerification.ts">
-        <metrics statements="5" coveredstatements="3" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="8" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="12" count="0" type="stmt"/>
+        <metrics statements="6" coveredstatements="6" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="8" count="12" type="cond" truecount="4" falsecount="0"/>
+        <line num="9" count="6" type="stmt"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="14" count="6" type="stmt"/>
       </file>
       <file name="transporter.ts" path="C:\Users\SHOPINVERSE\Desktop\Projects\DailyMoodTracker - 1\daily-mood-backend\src\utils\email\transporter.ts">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>

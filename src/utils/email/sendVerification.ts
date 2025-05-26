@@ -5,7 +5,9 @@ export const sendVerificationEmail = async (
   name: string,
   token: string
 ) => {
-  if (process.env.NODE_ENV === "test") return;
+  if (!email || !name || !token) {
+    throw new Error("Email, name, and token are required");
+  }
 
   const url = `${process.env.PRO_FRONTEND_URL}/verify-email?token=${token}`;
 
