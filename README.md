@@ -34,7 +34,10 @@ lumina-backend/
 │   ├── routes/             # Express routers
 │   ├── middlewares/        # Auth, error handling
 │   ├── utils/              # Helper functions (email, S3, tokens, notifications)
-│   └── server.ts            # App entry point
+│   └── server.ts           # App entry point
+├── test/
+│   ├── auth/               # Test for authentication (login, register and verify email)
+│   └── mocks/              # Mock Test for utils (Expo-sdk setup, Send notification and email )
 ├── .env
 ├── package.json
 ├── tsconfig.json
