@@ -52,7 +52,7 @@ export const handleLoginUser = async (req: Request, res: Response) => {
       expiresIn: "7d",
     });
 
-    if (expoPushToken !== null && user.expoPushToken !== null) {
+    if (expoPushToken) {
       const loginTime = new Date().toLocaleString();
 
       const uniqueTokens = Array.from(
@@ -122,7 +122,7 @@ export const handleLoginWithGoogle = async (req: Request, res: Response) => {
       expiresIn: "7d",
     });
 
-    if (expoPushToken !== null && user.expoPushToken !== null) {
+    if (expoPushToken) {
       const loginTime = new Date().toLocaleString();
 
       const uniqueTokens = Array.from(

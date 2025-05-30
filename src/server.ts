@@ -10,6 +10,8 @@ import corsOptions from "./config/corsOption";
 import { errorEvent, logEvent } from "./middlewares/events";
 
 import authRouter from "./routes/auth";
+import verifyAuthToken from "./middlewares/verifyAuth";
+import userRouter from "./routes/user";
 
 dotenv.config();
 
@@ -32,6 +34,9 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+
+app.use(verifyAuthToken);
+app.use("/api/user", userRouter);
 
 app.use(errorEvent);
 
